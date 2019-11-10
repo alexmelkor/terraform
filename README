@@ -1,0 +1,12 @@
+GitLab gavno project
+
+TODO:
+- Protect Gitlab instance from reboots/recreations
+- Optimize code by introducing modules
+- Implement initial setup in case of new setup or wiping out infrastructure
+  - Install dependencies
+  - Add Keys for gitlab.gavno
+- Implement redirect from 80 to 443 port
+- Setup Redis cache
+- Setup Elastic Search
+- Setup RDS and GitLab ELBs backups
