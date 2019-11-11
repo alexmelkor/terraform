@@ -10,3 +10,8 @@ TODO:
 - Setup Redis cache
 - Setup Elastic Search
 - Setup RDS and GitLab ELBs backups
+
+Requirements:
+  - Previously EBS to attach as GitLab data storage
+    Volume should be created separately to extract them from GitLab deployment Terraform Life cycle
+

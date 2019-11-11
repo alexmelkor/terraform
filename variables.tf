@@ -9,7 +9,7 @@ variable "ssh_key_name" {
 
 variable "allowed_external_cidr_blocks" {
   description = ""
-  default = ["31.223.230.76/32"]
+  default = ["31.223.230.76/32", "109.68.43.206/32"]
   type    =  list(string)
 }
 
@@ -18,11 +18,10 @@ variable "gitlab_host_name" {
   default     = "gitlab.gavno"
 }
 
-variable "gitlab_rds_hostname" {
-  description = "Host name for GitLabs RDS DB in private Route53 zone"
-  default     = "gitlab-db.gavno"
-}
-
 variable "gitlab_db_master_pass" {
   default = "supersicret"
+}
+
+variable "enable_nat_gateway" {
+  default = true
 }

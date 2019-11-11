@@ -1,25 +1,24 @@
 
 resource "aws_route53_zone" "gitlab" {
-  name = var.gitlab_host_name
+  name = var.zone_name
 
   vpc {
-    vpc_id  = aws_vpc.gitlab.id
+    vpc_id  = var.vpc_id
   }
 }
 
 resource "aws_route53_record" "gitlab_a" {
   zone_id = aws_route53_zone.gitlab.id
-  name    = var.gitlab_host_name
+  name    = var.zone_name
   type    = "A"
   ttl     = 1500
-//  records = [aws_instance.gitlab.private_ip]
-  records = [module.gitlab_instance.private_ip]
+  records = var.main_records
 }
 
 resource "aws_route53_record" "gitlab_rds" {
   zone_id = aws_route53_zone.gitlab.id
-  name    = "rds"
+  name    = var.database_cname
   type    = "CNAME"
   ttl     = 1500
-  records = [aws_db_instance.gitlab_postgres.address]
+  records = var.database_records
 }

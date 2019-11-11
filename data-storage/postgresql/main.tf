@@ -1,7 +1,7 @@
 
 resource "aws_db_subnet_group" "default" {
   name       = "gitlab_bd_subnet_group"
-  subnet_ids = [aws_subnet.rds1.id, aws_subnet.rds2.id]
+  subnet_ids = var.subnet_ids
 
   tags = {
     Name = "GitLab DB Subnet"
@@ -14,13 +14,12 @@ resource "aws_db_instance" "gitlab_postgres" {
   engine                  = "postgres"
   engine_version          = "11.5"
   instance_class          = "db.t2.micro"
-  name                    = "gitlab"
-  username                = "postgres"
-  password                = var.gitlab_db_master_pass  // TODO: Sure exists better way to manage passwords
-                                                            // TODO: Concider to use AWS Secret  Manager
+  name                    = var.username
+  username                = var.password
+  password                = var.password
   skip_final_snapshot     = true
   port                    = 5432
-  vpc_security_group_ids  = [data.aws_security_group.default.id]
+  vpc_security_group_ids  = var.vpc_security_group_ids
   tags = {
     Name = "GitLab PostgreSQL RDS"
   }

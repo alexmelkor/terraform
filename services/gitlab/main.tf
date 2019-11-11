@@ -1,10 +1,10 @@
 data "aws_ami" "gtilab" {
   most_recent = true
-  owners      = ["amazon"]
+  owners      = [var.ami_owner]
 
   filter {
     name   = "name"
-    values = ["amzn2-ami-hvm*"]
+    values = [var.ami_name_filter]
   }
 }
 
@@ -15,7 +15,7 @@ data "aws_subnet" "selected" {
 resource "aws_instance" "gitlab" {
   ami                         = data.aws_ami.gtilab.id
   associate_public_ip_address = false
-  instance_type               = "t2.micro"
+  instance_type               = var.instance_type
   key_name                    = var.ssh_key_name
   subnet_id                   = var.subnet_id
   vpc_security_group_ids      = var.vpc_security_group_ids
@@ -38,12 +38,3 @@ resource "aws_instance" "gitlab" {
 //  volume_id     = aws_ebs_volume.gitlab_home.id
 //}
 
-// TODO: Protect volume forom destroy/replace
-resource "aws_ebs_volume" "gitlab_home" {
-  availability_zone = data.aws_subnet.selected.availability_zone
-  size              = 9 //TODO: Concides to extract size to the variables
-
-  tags = {
-    Name = "GitLab home"
-  }
-}
