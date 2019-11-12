@@ -1,5 +1,9 @@
+variable "name" {
+  default = "gitlabhq_production"
+}
+
 variable "username" {
-  default = "postgres"
+  default = "gitlab"
 }
 
 variable "password" {

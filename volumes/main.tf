@@ -1,9 +1,13 @@
-// TODO: Protect volume forom destroy/replace
+provider "aws" {
+  region = var.region
+}
+
 resource "aws_ebs_volume" "gitlab_home" {
-  availability_zone = var.availability_zone
-  size              = 9 //TODO: Concides to extract size to the variables
+  availability_zone     = var.availability_zone
+  delete_on_termination = false
+  size                  = var.size
 
   tags = {
-    Name = "GitLab home"
+    Name = var.tag_name
   }
 }

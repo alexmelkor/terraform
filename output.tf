@@ -14,7 +14,7 @@ output "gitlab_ptivate_ip" {
 output "gitlab_db_host" {
   value = "rds.${var.gitlab_host_name}"
 }
-//
-//output "gitlab_external_host" {
-//  value = "https://${aws_lb.gitlab.dns_name}"
-//}
+
+output "gitlab_dbs_name" {
+  value = module.gitlab_elb.dns_name
+}

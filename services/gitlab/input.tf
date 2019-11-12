@@ -23,3 +23,10 @@ variable "vpc_security_group_ids" {
   type = list(string)
 }
 
+variable "attach_ebs" {
+  default = false
+}
+
+variable "ebs_id" {
+  default = ""
+}

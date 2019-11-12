@@ -27,10 +27,11 @@ module "gitlab_vpc" {
 }
 
 module "bastion_instance" {
-  source                  = "./services/bastion"
+  source = "./services/bastion"
 
-  ssh_key_name = var.ssh_key_name
-  subnet_id    = module.gitlab_vpc.public_subnets[0]
+  ami_name_filter = "amzn2-ami-hvm*"
+  ssh_key_name    = var.ssh_key_name
+  subnet_id       = module.gitlab_vpc.public_subnets[0]
 
   vpc_security_group_ids  = [
     data.aws_security_group.default.id,
@@ -39,10 +40,13 @@ module "bastion_instance" {
 }
 
 module "gitlab_instance" {
-  source                  = "./services/gitlab"
+  source = "./services/gitlab"
 
-  ssh_key_name  = var.ssh_key_name
-  subnet_id     = module.gitlab_vpc.private_subnets[0]
+  ami_name_filter = "amzn-ami-hvm-2018.03.0.20190826-x86_64-gp2"
+  ssh_key_name    = var.ssh_key_name
+  subnet_id       = module.gitlab_vpc.private_subnets[0]
+  attach_ebs      = true
+  ebs_id          = "vol-056eb161695591022"
 
   vpc_security_group_ids  = [
     data.aws_security_group.default.id,
@@ -54,8 +58,7 @@ module "gitlab_instance" {
 module "gitlab_rds" {
   source = "./data-storage/postgresql"
 
-  subnet_ids  = module.gitlab_vpc.private_subnets
-  password    = var.gitlab_db_master_pass
+  subnet_ids  = module.gitlab_vpc.database_subnets
 
   vpc_security_group_ids = [
     data.aws_security_group.default.id,

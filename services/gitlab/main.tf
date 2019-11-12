@@ -20,8 +20,10 @@ resource "aws_instance" "gitlab" {
   subnet_id                   = var.subnet_id
   vpc_security_group_ids      = var.vpc_security_group_ids
 
+  user_data = file("./services/gitlab/user_data/init.sh")
+
   root_block_device {
-    volume_size           = 12
+    volume_size           = 15
     delete_on_termination = true
   }
 
@@ -30,11 +32,11 @@ resource "aws_instance" "gitlab" {
   }
 }
 
-// TODO: Investigate automount: Do it with user_data or via option of config manager script?
-//resource "aws_volume_attachment" "ebs_att" {
-//  instance_id   = aws_instance.gitlab.id
-//  device_name   = "/dev/sdh"
-//  skip_destroy  = true
-//  volume_id     = aws_ebs_volume.gitlab_home.id
-//}
+resource "aws_volume_attachment" "ebs_att" {
+  count = var.attach_ebs ? 1 : 0
 
+  instance_id   = aws_instance.gitlab.id
+  device_name   = "/dev/sdh"
+  skip_destroy  = true
+  volume_id     = var.ebs_id
+}

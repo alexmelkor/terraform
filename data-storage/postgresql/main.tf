@@ -11,15 +11,17 @@ resource "aws_db_subnet_group" "default" {
 resource "aws_db_instance" "gitlab_postgres" {
   allocated_storage       = 5
   db_subnet_group_name    = aws_db_subnet_group.default.name
+  deletion_protection     = true
   engine                  = "postgres"
   engine_version          = "11.5"
   instance_class          = "db.t2.micro"
-  name                    = var.username
-  username                = var.password
+  name                    = var.name
+  username                = var.username
   password                = var.password
-  skip_final_snapshot     = true
   port                    = 5432
+  skip_final_snapshot     = true
   vpc_security_group_ids  = var.vpc_security_group_ids
+
   tags = {
     Name = "GitLab PostgreSQL RDS"
   }

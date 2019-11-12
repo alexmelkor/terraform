@@ -9,7 +9,7 @@ variable "ssh_key_name" {
 
 variable "allowed_external_cidr_blocks" {
   description = ""
-  default = ["31.223.230.76/32", "109.68.43.206/32"]
+  default = ["31.223.230.76/32"]
   type    =  list(string)
 }
 
